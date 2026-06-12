@@ -5,13 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>선한목자교회 교적관리</title>
 
-    <!-- 💡 여기가 핵심! 아이폰에게 전체 화면(앱 모드)으로 열라고 명령하는 코드 -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="mobile-web-app-capable" content="yes">
 
-    <!-- 💡 원하는 아이콘 파일 이름을 적어줍니다. (예: 2.png 또는 logo.png) -->
-    <link rel="apple-touch-icon" href="logo.png">
+    <link rel="apple-touch-icon" href="2.png">
     
     <style>
         body, html {
@@ -23,7 +21,31 @@
     </style>
 </head>
 <body>
-    <!-- 💡 목사님의 실제 스트림릿 앱 주소를 src="" 안에 넣어주세요 -->
-    <iframe src="https://gschurch.streamlit.app/?embed=true"></iframe>
+    <iframe id="app-frame" src=""></iframe>
+
+    <script>
+        // 💡 1. 스마트폰에 저장된 아이디가 있는지 꺼내봅니다.
+        const rememberedId = localStorage.getItem('gs_saved_id') || '';
+        
+        // 💡 2. 목사님의 실제 스트림릿 주소를 적어주세요 (아이디 정보가 있으면 주소 뒤에 실어서 보냅니다)
+        const streamlitUrl = "https://gschurch.streamlit.app/";
+        const frame = document.getElementById('app-frame');
+        
+        if (rememberedId) {
+            frame.src = streamlitUrl + "?embed=true&saved_id=" + encodeURIComponent(rememberedId);
+        } else {
+            frame.src = streamlitUrl + "?embed=true";
+        }
+
+        // 💡 3. 안쪽 스트림릿 앱이 보낸 "아이디 저장해줘/지워줘" 신호를 수신하여 스마트폰에 기록합니다.
+        window.addEventListener('message', function(event) {
+            if (event.data && event.data.type === 'SAVE_ID') {
+                localStorage.setItem('gs_saved_id', event.data.id);
+            }
+            if (event.data && event.data.type === 'DELETE_ID') {
+                localStorage.removeItem('gs_saved_id');
+            }
+        });
+    </script>
 </body>
 </html>
