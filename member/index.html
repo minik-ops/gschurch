@@ -2,6 +2,9 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
+    <meta name="color-scheme" content="light">
+    <meta name="supported-color-schemes" content="light">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>선한목자교회 교적관리</title>
 
@@ -9,8 +12,8 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="mobile-web-app-capable" content="yes">
 
-    <link rel="apple-touch-icon" href="logo.png?v=1">
-    <link rel="icon" href="logo.png?v=1">
+    <link rel="apple-touch-icon" href="logo.png?v=2">
+    <link rel="icon" href="logo.png?v=2">
     
     <style>
         body, html {
@@ -25,18 +28,20 @@
     <iframe id="app-frame" src=""></iframe>
 
     <script>
+        // 스마트폰에 저장된 아이디 꺼내기 (요금관리 전용)
         const rememberedId = localStorage.getItem('gs_utility_saved_id') || '';
-        const streamlitUrl = "https://gschurch.streamlit.app";
+        const streamlitUrl = "https://gschurch.streamlit.app/";
         const frame = document.getElementById('app-frame');
         
-        // 💡 핵심2. 스트림릿 주소 뒤에 theme.base=light 를 붙여 파이썬 수정 없이도 무조건 밝은 모드로 나오게 강제합니다.
-        let targetUrl = streamlitUrl + "/?embed=true&theme.base=light";
+        // 💡 핵심 4: 스트림릿 앱을 불러올 때도 "무조건 밝은 모드로 켜져라"(&theme.base=light)라고 명령합니다.
+        let targetUrl = streamlitUrl + "?embed=true&theme.base=light";
         
         if (rememberedId) {
             targetUrl += "&saved_id=" + encodeURIComponent(rememberedId);
         }
         frame.src = targetUrl;
 
+        // 아이디 저장/삭제 신호 수신기
         window.addEventListener('message', function(event) {
             if (event.data && event.data.type === 'SAVE_ID') {
                 localStorage.setItem('gs_utility_saved_id', event.data.id);
