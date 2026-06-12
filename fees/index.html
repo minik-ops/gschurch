@@ -9,17 +9,12 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="mobile-web-app-capable" content="yes">
 
-    <link rel="apple-touch-icon" href="./logo.png">
-    <link rel="icon" href="./logo.png">
+    <link rel="apple-touch-icon" href="logo.png?v=1">
+    <link rel="icon" href="logo.png?v=1">
     
     <style>
-        /* 💡 깃허브 액자 자체를 강제 하얀색으로 칠해버립니다 */
-        :root {
-            color-scheme: light only !important;
-        }
         body, html {
-            margin: 0; padding: 0; height: 100%; overflow: hidden; 
-            background-color: #ffffff !important; 
+            margin: 0; padding: 0; height: 100%; overflow: hidden; background-color: #ffffff;
         }
         iframe {
             width: 100%; height: 100%; border: none; background-color: #ffffff;
@@ -31,11 +26,12 @@
 
     <script>
         const rememberedId = localStorage.getItem('gs_utility_saved_id') || '';
-        const streamlitUrl = "https://gschurch-fees.streamlit.app/";
+        const streamlitUrl = "https://gschurch-fees.streamlit.app";
         const frame = document.getElementById('app-frame');
         
-        // embed 옵션과 함께 밝은 테마 강제 옵션(&theme.base=light)을 추가합니다.
-        let targetUrl = streamlitUrl + "?embed=true&theme.base=light";
+        // 💡 핵심2. 스트림릿 주소 뒤에 theme.base=light 를 붙여 파이썬 수정 없이도 무조건 밝은 모드로 나오게 강제합니다.
+        let targetUrl = streamlitUrl + "/?embed=true&theme.base=light";
+        
         if (rememberedId) {
             targetUrl += "&saved_id=" + encodeURIComponent(rememberedId);
         }
